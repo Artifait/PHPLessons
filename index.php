@@ -1,82 +1,79 @@
+<?php
+session_start();
+require_once 'solver.php';
 
+$mode = $_GET['mode'] ?? 'session';
+$history = [];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $a = (float)($_POST['a'] ?? 0);
+  $b = (float)($_POST['b'] ?? 0);
+  $c = (float)($_POST['c'] ?? 0);
+
+  try {
+    $result = solveQuadraticEquation($a, $b, $c);
+
+    if ($mode === 'session') {
+      $_SESSION['history'][] = (string)$result;
+      $history = $_SESSION['history'];
+    } else {
+      $cookieHistory = json_decode($_COOKIE['history'] ?? '[]', true);
+      $cookieHistory[] = (string)$result;
+      setcookie('history', json_encode($cookieHistory), time() + 3600);
+      $history = $cookieHistory;
+    }
+  } catch (Exception $e) {
+    $error = $e->getMessage();
+  }
+} else {
+  if ($mode === 'session') {
+    $history = $_SESSION['history'] ?? [];
+  } else {
+    $history = json_decode($_COOKIE['history'] ?? '[]', true);
+  }
+}
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <?php
+  <h1>Решение квадратного уравнения</h1>
 
-  class QuadraticEquationResult {
-    public ?float $x1 = null;
-    public ?float $x2 = null;
-    public float $discriminant;
-    public string $message;
-
-    public function __construct(float $discriminant, ?float $x1 = null, ?float $x2 = null, string $message = '') {
-        $this->discriminant = $discriminant;
-        $this->x1 = $x1;
-        $this->x2 = $x2;
-        $this->message = $message;
-    }
-
-    public function toString(): string {
-        $result = "Дискриминант D = {$this->discriminant}. ";
-        if ($this->x1 !== null && $this->x2 !== null) {
-            $result .= "Корни: x₁ = {$this->x1}, x₂ = {$this->x2}.";
-        } elseif ($this->x1 !== null) {
-            $result .= "Один корень: x = {$this->x1}.";
-        } else {
-            $result .= $this->message;
-        }
-        return $result;
-    }
-  }
-
-  if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $a = 1;
-    $b = 1;
-    $c = 1;
-
-    if(isset($_POST["a"])) {
-        $a = (float)$_POST["a"];
-    }
-    if(isset($_POST["b"])) {
-        $b = (float)$_POST["b"];
-    }
-    if(isset($_POST["c"])) {
-      $c = (float)$_POST["c"];
-    }
-    $d = $b ** 2 - 4 * $a * $c;
-
-    echo "<h3>Результат:</h3>";
-
-    if($d > 0)
-    {
-      $sqrtD = sqrt($d);
-      $x1 = (-$b + $sqrtD) / (2 * $a);
-      $x2 = (-$b - $sqrtD) / (2 * $a);
-      echo "<p>x1 = " . $x1 . ", x2 = " . $x2 . "</p>";
-    }
-    elseif($d == 0)
-    {
-      $x1 = -$b / (2 * $a);
-      echo "<p>x1 = " . $x1 ."</p>";
-    }
-    else
-    {
-      echo "Корней нет";
-    } 
-  }
-  ?>
-  <h3>Форма ввода данных</h3>
-  <form method="POST">
-      <p>A: <input type="number" name="a" /></p>
-      <p>B: <input type="number" name="b" /></p>
-      <p>C: <input type="number" name="c" /></p>
-      <input type="submit" value="Отправить">
+  <form method="post" action="?mode=<?= htmlspecialchars($mode) ?>">
+    <label>Коэффициент a:<br>
+      <input type="number" name="a" required>
+    </label><br>
+    <label>Коэффициент b:<br>
+      <input type="number" name="b" required>
+    </label><br>
+    <label>Коэффициент c:<br>
+      <input type="number" name="c" required>
+    </label><br>
+    <input type="submit" value="Решить">
   </form>
+
+  <?php if (!empty($error)): ?>
+    <p class="error"><?= htmlspecialchars($error) ?></p>
+  <?php endif; ?>
+
+  <div class="mode-switch">
+    <strong>Режим:</strong>
+    <a href="?mode=session">Сессии</a> |
+    <a href="?mode=cookie">Куки</a>
+  </div>
+
+  <?php if (!empty($history)): ?>
+    <h2>История решений:</h2>
+    <div class="history">
+      <?php foreach ($history as $entry): ?>
+        <div class="card">
+          <pre><?= htmlspecialchars($entry) ?></pre>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  <?php endif; ?>
 </body>
 </html>
