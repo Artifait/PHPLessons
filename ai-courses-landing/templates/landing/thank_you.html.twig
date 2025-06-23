@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Спасибо!{% endblock %}
+
+{% block body %}
+<div class="container text-center section-padding">
+    <h1 class="display-5">🎉 Спасибо за регистрацию!</h1>
+    <p class="lead mt-3">Мы свяжемся с вами в ближайшее время по указанному email.</p>
+    <a href="{{ path('app_landing') }}" class="btn btn-primary mt-4">Вернуться на главную</a>
+</div>
+{% endblock %}

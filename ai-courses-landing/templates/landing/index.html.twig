@@ -1,0 +1,160 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Курс: AI-ассистенты на Symfony с нуля{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init();</script>
+{% endblock %}
+
+{% block body %}
+<div class="hero bg-dark text-white text-center py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold" data-aos="fade-down">Запусти AI-ассистента с нуля на Symfony</h1>
+        <p class="lead mb-4" data-aos="fade-up">Создай своего ИИ-помощника с OpenAI, HuggingFace и Symfony – без опыта в машинном обучении</p>
+        <a href="#register" class="btn btn-primary btn-lg">Принять участие</a>
+    </div>
+</div>
+
+<div class="container py-5">
+    <h2 class="text-center mb-5">Кому подойдёт этот курс?</h2>
+    <div class="row text-center">
+        <div class="col-md-4" data-aos="fade-up">
+            <div class="p-4 shadow rounded">
+                <h4>👶 Новичкам</h4>
+                <p>Пошаговое обучение с нуля: всё объясняется понятно и на практике.</p>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="p-4 shadow rounded">
+                <h4>👨‍💻 Разработчикам</h4>
+                <p>Интеграция AI через API, автоматизация и генерация текста — всё на Symfony.</p>
+            </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="p-4 shadow rounded">
+                <h4>🚀 Предпринимателям</h4>
+                <p>Запуск AI-сервисов под задачи бизнеса и автоматизация процессов.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Программа курса</h2>
+        <ul class="list-group list-group-flush shadow-lg">
+            <li class="list-group-item">✅ Введение в AI, OpenAI и Symfony</li>
+            <li class="list-group-item">✅ Создание чат-ботов с ChatGPT</li>
+            <li class="list-group-item">✅ Интеграция моделей Hugging Face</li>
+            <li class="list-group-item">✅ Python + Symfony: передача данных через API</li>
+            <li class="list-group-item">✅ Генерация изображений и текстов с AI</li>
+            <li class="list-group-item">✅ Дипломный проект: свой AI-ассистент</li>
+        </ul>
+    </div>
+</div>
+
+<div class="py-5 bg-primary text-white">
+    <div class="container">
+        <h2 class="text-center mb-4">Что вы получите:</h2>
+        <div class="row text-center">
+            <div class="col-md-3" data-aos="zoom-in">
+                <h3>🎓</h3><p>Сертификат и дипломный проект</p>
+            </div>
+            <div class="col-md-3" data-aos="zoom-in" data-aos-delay="100">
+                <h3>💼</h3><p>AI-ассистент в портфолио</p>
+            </div>
+            <div class="col-md-3" data-aos="zoom-in" data-aos-delay="200">
+                <h3>📈</h3><p>Рост в профессии или бизнесе</p>
+            </div>
+            <div class="col-md-3" data-aos="zoom-in" data-aos-delay="300">
+                <h3>🤖</h3><p>Понимание, как работает AI изнутри</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <h2 class="text-center mb-5">Отзывы студентов</h2>
+    <div class="row">
+        <div class="col-md-6" data-aos="fade-right">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <p class="card-text">«Теперь я понимаю, как работает AI, и реально применяю это в своих проектах!»</p>
+                    <div class="d-flex align-items-center">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle me-3" width="50">
+                        <div>
+                            <strong>Марина</strong><br><small>Фронтенд-разработчик</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" data-aos="fade-left">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <p class="card-text">«Очень крутая подача! Особенно понравилось, что все через Symfony — мой родной стек!»</p>
+                    <div class="d-flex align-items-center">
+                        <img src="https://randomuser.me/api/portraits/men/35.jpg" class="rounded-circle me-3" width="50">
+                        <div>
+                            <strong>Алексей</strong><br><small>Backend-разработчик</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5" id="register">
+    <div class="container">
+        <h2 class="text-center mb-4">Записаться на курс</h2>
+
+        {% if not form.vars.valid %}
+            <script>
+                window.location.hash = '#register';
+            </script>
+        {% endif %}
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow border-0">
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                        {% if not form.vars.valid %}
+                            <div class="alert alert-danger">
+                                Пожалуйста, исправьте ошибки в форме.
+                            </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            {{ form_label(form.name, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.name) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_label(form.email, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.email) }}
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">Отправить заявку</button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
