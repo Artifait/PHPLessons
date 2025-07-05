@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Coffee List{% endblock %}
+
+{% block body %}
+    <h1>Hot Coffee</h1>
+
+    <div class="coffee-cards">
+        {% for coffee in coffees %}
+            <div class="coffee-card">
+                <img src="{{ coffee.image }}" alt="{{ coffee.title }}" class="coffee-card-image">
+                <div class="coffee-card-content">
+                    <h2>{{ coffee.title }}</h2>
+                    <p>{{ coffee.description }}</p>
+                    {% if coffee.ingredients is not empty %}
+                        <ul>
+                            {% for ingredient in coffee.ingredients %}
+                                <li>{{ ingredient }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <p class="coffee-card-sales">Sold: {{ coffee.totalSales }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
