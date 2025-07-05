@@ -1,9 +1,0 @@
-get_users:
-  path: /users
-  controller: get_users
-  methods: GET
-
-create_user:
-  path: /users
-  controller: create_user
-  methods: POST
